@@ -636,7 +636,15 @@ class TagListBuffer(Buffer):
         lines = list()
         displayedtags = sorted(filter(self.filtfun, self.tags),
                                key=unicode.lower)
-        for (num, b) in enumerate(displayedtags):
+
+        countedtags = []
+        for b in displayedtags:
+            querystring = 'tag:%s and tag:unread' % b
+            count = self.ui.dbman.count_threads(querystring)
+            countedtags.append( (b, count) )
+        countedtags.sort(key=lambda (b,count): count, reverse=True)
+
+        for num, (b, count) in enumerate(countedtags):
             if (num % 2) == 0:
                 attr = settings.get_theming_attribute('taglist', 'line_even')
             else:
@@ -649,6 +657,9 @@ class TagListBuffer(Buffer):
                 rows.append(urwid.Text(b + ' [hidden]'))
             elif tw.translated is not b:
                 rows.append(urwid.Text('(%s)' % b))
+
+            rows.append(urwid.Text('(%i)' % count))
+
             line = urwid.Columns(rows, dividechars=1)
             line = urwid.AttrMap(line, attr, focus_att)
             lines.append(line)
