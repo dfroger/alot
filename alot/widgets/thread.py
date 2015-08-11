@@ -12,7 +12,7 @@ from alot.db.utils import decode_header, X_SIGNATURE_MESSAGE_HEADER
 from alot.helper import tag_cmp
 from alot.widgets.globals import TagWidget
 from alot.widgets.globals import AttachmentWidget
-from alot.foreign.urwidtrees import Tree, SimpleTree, CollapsibleTree
+from urwidtrees import Tree, SimpleTree, CollapsibleTree
 from alot.db.utils import extract_body
 
 
@@ -144,7 +144,7 @@ class MessageTree(CollapsibleTree):
     """
     def __init__(self, message, odd=True):
         """
-        :param message: Messag to display
+        :param message: Message to display
         :type message: alot.db.Message
         :param odd: theme summary widget as if this is an odd line
                     (in the message-pile)

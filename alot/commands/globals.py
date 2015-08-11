@@ -362,10 +362,11 @@ class CallCommand(Command):
     def apply(self, ui):
         try:
             hooks = settings.hooks
-            env = {'ui': ui, 'settings': settings}
-            for k, v in env.items():
-                if k not in hooks.__dict__:
-                    hooks.__dict__[k] = v
+            if hooks:
+                env = {'ui': ui, 'settings': settings}
+                for k, v in env.items():
+                    if k not in hooks.__dict__:
+                        hooks.__dict__[k] = v
 
             exec(self.command)
         except Exception as e:
@@ -673,7 +674,7 @@ class ComposeCommand(Command):
         :param spawn: force spawning of editor in a new terminal
         :type spawn: bool
         :param rest: remaining parameters. These can start with
-                     'mailto' in which case it is interpreted sa mailto string.
+                     'mailto' in which case it is interpreted as mailto string.
                      Otherwise it will be interpreted as recipients (to) header
         :type rest: list(str)
         """
